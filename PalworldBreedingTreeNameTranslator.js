@@ -101,6 +101,7 @@
         "Beakon": "라이버드",
         "Ragnahawk": "적토조",
         "Katress": "캐티메이지",
+        "Katress Ignis": "캐티위자드",
         "Wixen": "마호",
         "Verdash": "초토리",
         "Vaelet": "비오레타",
@@ -134,6 +135,7 @@
         "Helzephyr": "헬가루다",
         "Astegon": "라바드래곤",
         "Menasting": "데스 스팅",
+        "Menasting Terra": "골드 스팅",
         "Anubis": "아누비스",
         "Jormuntide": "레비드라",
         "Jormuntide Ignis": "아그니드라",
@@ -182,23 +184,31 @@
         "Normal": "노말"
     };
 
-    // 텍스트 노드 변환 함수
+    // 텍스트 노드 변환 함수 (원본 텍스트를 title에 저장)
     function translateText(node) {
         let text = node.textContent;
         let translated = false;
 
         Object.keys(palTranslations).forEach(englishName => {
             if (text.includes(englishName)) {
-                node.textContent = text.replace(
+                const translatedText = text.replace(
                     new RegExp(englishName, 'g'),
                     palTranslations[englishName]
                 );
+
+                // 원본 텍스트를 title로 저장 (부모 요소에 추가)
+                if (node.parentElement) {
+                    node.parentElement.setAttribute('title', text);
+                }
+
+                node.textContent = translatedText;
                 translated = true;
             }
         });
 
         return translated;
     }
+
 
     // 요소 및 자식 요소 번역 함수
     function translateElement(element) {
@@ -260,5 +270,5 @@
     setInterval(() => {
         translatePage();
         logTranslation();
-    }, 2000);
+    }, 5000);
 })();
